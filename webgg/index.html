@@ -1,0 +1,190 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamewave</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #1d2b7f;
+      color: white;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+    }
+
+    header nav a {
+      margin-right: 20px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    header nav a.active {
+      text-decoration: underline;
+    }
+
+    .search input {
+      padding: 5px 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 3rem;
+      margin: 20px 0;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .game-card {
+      background: #2f3ea0;
+      border-radius: 15px;
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.2s ease-in-out;
+      cursor: pointer;
+    }
+
+    .game-card:hover {
+      transform: scale(1.05);
+    }
+
+    .game-card img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .game-card p {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* Game container */
+    #game-container {
+      display: none;
+      padding: 20px;
+      text-align: center;
+    }
+
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      border-radius: 15px;
+    }
+
+    #back-btn {
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      background: #ff5252;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    #back-btn:hover {
+      background: #ff1744;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#" class="active" onclick="filterCategory('all')">Hot</a>
+      <a href="#" onclick="filterCategory('puzzle')">Puzzle</a>
+    </nav>
+    <div class="search">
+      <input type="text" id="searchBox" placeholder="🔍 Search games..." onkeyup="searchGames()">
+    </div>
+  </header>
+
+  <h1>GAMEWAVE</h1>
+
+  <!-- Home grid -->
+  <section class="game-grid" id="gameGrid">
+    <div class="game-card" data-category="multiplayer" onclick="openGame('flappybird.html')">
+      <img src="flappybird.png" alt="flappybird">
+      <p>Flappybird</p>
+    </div>
+   
+    <div class="game-card" data-category="action" onclick="openGame('snake.html')">
+      <img src="snakegame.png" alt="snakegame">
+      <p>Snakegame</p>
+    </div>
+    <div class="game-card" data-category="puzzle" onclick="openGame('suduko.html')">
+      <img src="suduko.png" alt="suduko">
+      <p>Suduko</p>
+    </div>
+    <div class="game-card" data-category="puzzle" onclick="openGame('2048.html')">
+      <img src="2048.png" alt="2048">
+      <p>2048</p>
+    </div>
+   
+  </section>
+
+  <!-- Game container -->
+  <section id="game-container">
+    <button id="back-btn" onclick="goHome()">⬅ Back</button>
+    <iframe id="game-frame"></iframe>
+  </section>
+
+  <script>
+    
+    // Show game container without loading external files
+
+function openGame(url) {
+  // Open the game HTML directly in the browser, full page
+  window.location.href = url;
+}
+
+
+
+    // Search filter
+    function searchGames() {
+      const input = document.getElementById("searchBox").value.toLowerCase();
+      const cards = document.querySelectorAll(".game-card");
+
+      cards.forEach(card => {
+        const title = card.querySelector("p").textContent.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
+      });
+    }
+
+    // Category filter
+    function filterCategory(category) {
+      const cards = document.querySelectorAll(".game-card");
+      const links = document.querySelectorAll("nav a");
+
+      links.forEach(link => link.classList.remove("active"));
+      event.target.classList.add("active");
+
+      cards.forEach(card => {
+        if (category === "all" || card.dataset.category === category) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
